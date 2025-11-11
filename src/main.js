@@ -11,6 +11,8 @@ async function Mostrarpokedex() {
 
     pokemons.forEach(({ name }) => {
       const pokeDatos = document.createElement("div");
+      // guardar el nombre en minúsculas para poder filtrar fácilmente
+      pokeDatos.dataset.name = name.toLowerCase();
       const ImagenPokemon = `https://pokeapi.co/api/v2/pokemon/${numero}`;
 
       async function MostrarImagen() {
@@ -37,3 +39,17 @@ async function Mostrarpokedex() {
 }
 
 Mostrarpokedex();
+
+const ElInput = document.getElementById("filtrar");
+
+  ElInput.addEventListener("input", (evento) => {
+    const consulta = evento.target.value.trim().toLowerCase();
+    const container = document.getElementById("pokedex");
+    Array.from(container.children).forEach((child) => {
+      const name = child.dataset.name || "";
+      // si el query es vacío mostrar todo
+      child.style.display =
+        consulta === "" ? "" : name.includes(consulta) ? "" : "none";
+    });
+  });
+
