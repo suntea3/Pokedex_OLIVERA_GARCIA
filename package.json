@@ -1,5 +1,9 @@
 {
+<<<<<<< HEAD
   "name": "poke-project",
+=======
+  "name": "pokedex",
+>>>>>>> e6c7c9420b3f13f6b276475359488437df1feb5b
   "private": true,
   "version": "0.0.0",
   "type": "module",

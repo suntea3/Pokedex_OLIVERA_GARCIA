@@ -11,9 +11,7 @@ async function Mostrarpokedex() {
 
     pokemons.forEach(({ name }) => {
       const pokeDatos = document.createElement("div");
-      pokeDatos.classList.add("card");
       const ImagenPokemon = `https://pokeapi.co/api/v2/pokemon/${numero}`;
-      const nombreCapitalizado = name.charAt(0).toUpperCase() + name.slice(1);
 
       async function MostrarImagen() {
         try {
@@ -29,16 +27,7 @@ async function Mostrarpokedex() {
         }
       }
       MostrarImagen();
-      pokeDatos.innerHTML = `
-        <div class="numPoke">
-          <span>#${numero}</span>
-        </div>
-
-        <div class="pokeCard">
-            <p>${nombreCapitalizado}</p>
-        </div>
-
-      `;
+      pokeDatos.innerHTML = `<p>#${numero} Nombre: ${name}</p>`;
       sectionEl.appendChild(pokeDatos);
       numero++;
     });
@@ -46,22 +35,5 @@ async function Mostrarpokedex() {
     console.error("Error:", err);
   }
 }
-
-const header = document.createElement("div");
-header.classList.add("controls");
-
-const inputBuscar = document.createElement("input");
-inputBuscar.type = "text";
-inputBuscar.placeholder = "Buscar Pokémon...";
-inputBuscar.classList.add("buscar-input");
-
-const btnFavoritos = document.createElement("button");
-btnFavoritos.textContent = "Ver Favoritos";
-btnFavoritos.classList.add("btn-favoritos");
-
-header.appendChild(inputBuscar);
-header.appendChild(btnFavoritos);
-document.body.insertBefore(header, document.getElementById("pokedex"));
-
 
 Mostrarpokedex();
