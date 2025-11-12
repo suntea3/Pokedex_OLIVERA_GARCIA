@@ -1,50 +1,75 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="stylesheet" href="src/style.css" />
-  <link rel="shortcut icon" href="public/pokeball.svg" type="image/javascript.svg" />
-  <script src="https://kit.fontawesome.com/43529ab0f8.js" crossorigin="anonymous"></script>
-  <title>Pokédex - TP2</title>
-</head>
-<body>
-  <header>
-    <nav class="navbar">
-      <h1>Pokédex | Primera Generación</h1>
-      <div class="controls">
-        <input type="text" placeholder="Buscar Pokémon..." class="buscar-input" id="buscador" />
-        <a id="btnVerFavoritos" class="btn-favoritos">Ver Favoritos</a>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="src/style.css" />
+    <link
+      rel="shortcut icon"
+      href="public/pokeball.svg"
+      type="image/javascript.svg"
+    />
+    <script
+      src="https://kit.fontawesome.com/43529ab0f8.js"
+      crossorigin="anonymous"
+    ></script>
+    <title>Pokédex - TP2</title>
+  </head>
+  <body>
+    <header>
+      <nav class="navbar">
+        <h1>Pokédex | Primera Generación</h1>
+        <div class="controls">
+          <input
+            type="text"
+            placeholder="Buscar Pokémon..."
+            class="buscar-input"
+            id="buscador"
+          />
+          <a id="btnVerFavoritos" class="btn-favoritos">Ver Favoritos</a>
+        </div>
+        <div class="toggle-wrapper">
+          <input type="checkbox" id="toggleTema" class="toggle-input" />
+          <label for="toggleTema" class="toggle-label">
+            <span class="toggle-ball"></span>
+          </label>
+        </div>
+      </nav>
+    </header>
+
+    <main>
+      <section id="pokedex"></section>
+
+      <div id="overlay-favoritos" class="overlay">
+        <div class="panel-favoritos">
+          <button id="cerrar-favoritos" class="btn-cerrar-panel">✖</button>
+          <h2>Mis Favoritos</h2>
+          <div id="lista-favoritos" class="lista-favoritos"></div>
+        </div>
       </div>
-      <div class="toggle-wrapper">
-        <input type="checkbox" id="toggleTema" class="toggle-input" />
-        <label for="toggleTema" class="toggle-label">
-          <span class="toggle-ball"></span>
-        </label>
-      </div>
-    </nav>
-  </header>
+    </main>
 
-  <main>
-    <section id="pokedex"></section>
+    <footer>
+      <span
+        >&copy; Todos los derechos reservados - Trabajo Práctico II - SV All The
+        Problems - S. 2001</span
+      >
+      <ul>
+        <li>
+          <i class="fa-brands fa-github"></i
+          ><a href="https://github.com/vgarcia2024/" target="_blank"
+            >GitHub - Valentín García</a
+          >
+        </li>
+        <li>
+          <i class="fa-brands fa-github"></i
+          ><a href="https://github.com/suntea3/" target="_blank"
+            >GitHub - Santiago Olivera</a
+          >
+        </li>
+      </ul>
+    </footer>
 
-    <div id="overlay-favoritos" class="overlay">
-      <div class="panel-favoritos">
-        <button id="cerrar-favoritos" class="btn-cerrar-panel">✖</button>
-        <h2>Mis Favoritos</h2>
-        <div id="lista-favoritos" class="lista-favoritos"></div>
-      </div>
-    </div>
-  </main>
-
-  <footer>
-    <span>&copy; Todos los derechos reservados - Trabajo Práctico II - SV All The Problems - S. 2001</span>
-    <ul>
-      <li><i class="fa-brands fa-github"></i><a href="https://github.com/suntea3/Pokedex_OLIVERA_GARCIA" target="_blank">GitHub - Valentín García</a></li>
-      <li><i class="fa-brands fa-github"></i><a href="https://github.com/suntea3/Pokedex_OLIVERA_GARCIA" target="_blank">GitHub - Santiago Olivera</a></li>
-    </ul>
-  </footer>
-
-  <script type="module" src="src/main.js"></script>
-</body>
+    <script type="module" src="src/main.js"></script>
+  </body>
 </html>
