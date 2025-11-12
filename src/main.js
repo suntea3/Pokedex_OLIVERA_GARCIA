@@ -71,4 +71,68 @@ function manejarFavorito(pokemon, desdeFavoritos = false) {
   mostrarFavoritos();
 }
 
-Mostrarpokedex();
+async function mostrarFavoritos() {
+  const favs = getFavs();
+  const lista = document.getElementById("lista-favoritos");
+  lista.innerHTML = favs.length ? "" : "<p>Todavía no tenes favoritos.</p>";
+  for (const id of favs) {
+    try {
+      const p = await (
+        await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`)
+      ).json();
+      const img =
+        p.sprites.other?.dream_world?.front_default ||
+        p.sprites.other?.["official-artwork"]?.front_default ||
+        p.sprites.front_default ||
+        "src/img/placeholder.png";
+      const card = document.createElement("div");
+      card.className = "card-fav";
+      card.innerHTML = `
+        <img src="${img}" alt="${p.name}">
+        <p><strong>${p.name[0].toUpperCase() + p.name.slice(1)}</strong></p>
+        <button class="btn-remove">Quitar</button>
+      `;
+      card
+        .querySelector(".btn-remove")
+        .addEventListener("click", () => manejarFavorito(p, true));
+      lista.appendChild(card);
+    } catch (e) {
+      console.error("Error cargando favorito:", e);
+    }
+  }
+}
+
+function mostrarMensaje(texto, tipo = "ok") {
+  const msg = document.createElement("div");
+  msg.className = `notificacion ${tipo}`;
+  msg.textContent = texto;
+  document.body.appendChild(msg);
+  setTimeout(() => msg.classList.add("visible"), 50);
+  setTimeout(() => {
+    msg.classList.remove("visible");
+    setTimeout(() => msg.remove(), 300);
+  }, 3000);
+}
+
+const overlay = document.getElementById("overlay-favoritos");
+document.getElementById("btnVerFavoritos").addEventListener("click", () => {
+  mostrarFavoritos();
+  overlay.classList.add("visible");
+});
+document
+  .getElementById("cerrar-favoritos")
+  .addEventListener("click", () => overlay.classList.remove("visible"));
+
+const toggleInput = document.getElementById("toggleTema");
+const body = document.body;
+if (localStorage.getItem("tema") === "alternativo") {
+  body.classList.add("tema-alternativo");
+  toggleInput.checked = true;
+}
+toggleInput.addEventListener("change", () => {
+  const esAlternativo = toggleInput.checked;
+  body.classList.toggle("tema-alternativo", esAlternativo);
+  localStorage.setItem("tema", esAlternativo ? "alternativo" : "verde");
+});
+
+mostrarPokedex();
