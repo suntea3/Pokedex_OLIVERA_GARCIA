@@ -1,44 +1,43 @@
 const API = "https://pokeapi.co/api/v2/pokemon?limit=151&offset=0";
 
-async function Mostrarpokedex() {
+async function mostrarPokedex() {
+  const contenedor = document.getElementById("pokedex");
   try {
-    const res = await fetch(API);
-    const pokedex = await res.json();
-    const sectionEl = document.getElementById("pokedex");
-    const pokemons = pokedex.results;
-
-    let numero = 1;
-
-    for (const { name } of pokemons) {
-      const pokeDatos = document.createElement("div");
-      pokeDatos.classList.add("card");
-      pokeDatos.dataset.name = name.toLowerCase();
-
-      const ImagenPokemon = `https://pokeapi.co/api/v2/pokemon/${numero}`;
-
-      try {
-        const res = await fetch(ImagenPokemon);
-        const pokemon = await res.json();
-        const Imagen = pokemon.sprites.other.dream_world.front_default;
-
-        const pokeImagen = document.createElement("img");
-        pokeImagen.src = Imagen;
-        pokeDatos.appendChild(pokeImagen);
-      } catch (err) {
-        console.error("Error al cargar imagen:", err);
-      }
-
-      const nombreEl = document.createElement("p");
-      nombreEl.textContent = `#${numero} ${
-        name.charAt(0).toUpperCase() + name.slice(1)
-      }`;
-      pokeDatos.appendChild(nombreEl);
-
-      sectionEl.appendChild(pokeDatos);
-      numero++;
+    const data = await (await fetch(API)).json();
+    for (let i = 1; i <= data.results.length; i++) {
+      const pokemon = await (
+        await fetch(`https://pokeapi.co/api/v2/pokemon/${i}`)
+      ).json();
+      const img =
+        pokemon.sprites.other?.dream_world?.front_default ||
+        pokemon.sprites.other?.["official-artwork"]?.front_default ||
+        pokemon.sprites.front_default ||
+        "src/img/placeholder.png";
+      const card = document.createElement("div");
+      card.className = "card";
+      card.dataset.name = pokemon.name.toLowerCase();
+      card.innerHTML = `
+        <img src="${img}" alt="${pokemon.name}">
+        <div class="numPoke">#${pokemon.id}</div>
+        <p><strong>${
+          pokemon.name[0].toUpperCase() + pokemon.name.slice(1)
+        }</strong></p>
+        <p class="info-poke">Tipo: ${pokemon.types
+          .map((t) => t.type.name)
+          .join(", ")}</p>
+        <p class="info-poke">Habilidades: ${pokemon.abilities
+          .slice(0, 2)
+          .map((a) => a.ability.name)
+          .join(", ")}</p>
+        <button class="btn-fav">Agregar a Favoritos</button>
+      `;
+      card
+        .querySelector(".btn-fav")
+        .addEventListener("click", () => manejarFavorito(pokemon));
+      contenedor.appendChild(card);
     }
-  } catch (err) {
-    console.error("Error al cargar pokedex:", err);
+  } catch (e) {
+    console.error("Error al cargar la Pokédex:", e);
   }
 }
 
