@@ -41,29 +41,10 @@ async function mostrarPokedex() {
   }
 }
 
-const header = document.createElement("div");
-header.classList.add("controls");
-
-const ElInput = document.createElement("input");
-ElInput.type = "text";
-ElInput.placeholder = "Buscar Pokémon...";
-ElInput.classList.add("buscar-input");
-
-const btnFavoritos = document.createElement("button");
-btnFavoritos.textContent = "Ver Favoritos";
-btnFavoritos.classList.add("btn-favoritos");
-
-header.appendChild(ElInput);
-header.appendChild(btnFavoritos);
-document.body.insertBefore(header, document.getElementById("pokedex"));
-
-ElInput.addEventListener("input", (evento) => {
-  const consulta = evento.target.value.trim().toLowerCase();
-  const container = document.getElementById("pokedex");
-  Array.from(container.children).forEach((child) => {
-    const name = child.dataset.name || "";
-    child.style.display =
-      consulta === "" ? "" : name.includes(consulta) ? "" : "none";
+document.getElementById("buscador").addEventListener("input", (e) => {
+  const texto = e.target.value.toLowerCase();
+  document.querySelectorAll(".card").forEach((card) => {
+    card.style.display = card.dataset.name.includes(texto) ? "" : "none";
   });
 });
 
@@ -91,4 +72,3 @@ function manejarFavorito(pokemon, desdeFavoritos = false) {
 }
 
 Mostrarpokedex();
-
