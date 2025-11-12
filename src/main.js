@@ -41,12 +41,54 @@ async function mostrarPokedex() {
   }
 }
 
-document.getElementById("buscador").addEventListener("input", (e) => {
-  const texto = e.target.value.toLowerCase();
-  document.querySelectorAll(".card").forEach((card) => {
-    card.style.display = card.dataset.name.includes(texto) ? "" : "none";
+const header = document.createElement("div");
+header.classList.add("controls");
+
+const ElInput = document.createElement("input");
+ElInput.type = "text";
+ElInput.placeholder = "Buscar Pokémon...";
+ElInput.classList.add("buscar-input");
+
+const btnFavoritos = document.createElement("button");
+btnFavoritos.textContent = "Ver Favoritos";
+btnFavoritos.classList.add("btn-favoritos");
+
+header.appendChild(ElInput);
+header.appendChild(btnFavoritos);
+document.body.insertBefore(header, document.getElementById("pokedex"));
+
+ElInput.addEventListener("input", (evento) => {
+  const consulta = evento.target.value.trim().toLowerCase();
+  const container = document.getElementById("pokedex");
+  Array.from(container.children).forEach((child) => {
+    const name = child.dataset.name || "";
+    child.style.display =
+      consulta === "" ? "" : name.includes(consulta) ? "" : "none";
   });
 });
+
+const getFavs = () => JSON.parse(localStorage.getItem("favoritos")) || [];
+const saveFavs = (f) => localStorage.setItem("favoritos", JSON.stringify(f));
+
+function manejarFavorito(pokemon, desdeFavoritos = false) {
+  const favs = getFavs();
+  const id = pokemon.id;
+  const nombre = pokemon.name[0].toUpperCase() + pokemon.name.slice(1);
+  const existe = favs.includes(id);
+  if (existe) {
+    if (desdeFavoritos) {
+      saveFavs(favs.filter((f) => f !== id));
+      mostrarMensaje(`${nombre} eliminado de tus favoritos.`, "aviso");
+    } else {
+      mostrarMensaje(`${nombre} ya está en tus favoritos.`, "aviso");
+    }
+  } else {
+    favs.push(id);
+    saveFavs(favs);
+    mostrarMensaje(`${nombre} agregado a tus favoritos.`, "ok");
+  }
+  mostrarFavoritos();
+}
 
 Mostrarpokedex();
 
